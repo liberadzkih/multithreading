@@ -1,23 +1,21 @@
 package edu.iis.mto.multithread;
 
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Rule;
+import org.junit.jupiter.api.RepeatedTest;
 
 import static org.mockito.Mockito.*;
 
 public class BetterRadarTest {
 
-    PatriotBattery batteryMock;
+    private static PatriotBattery batteryMock;
 
-    @Before
-    public void setup(){
+    @Rule
+    public RepeatRule repeatRule = new RepeatRule();
+
+    @RepeatedTest(1000)
+    public void patriotsShouldBeLaunchedGivenAmountTimes() {
         batteryMock = mock(PatriotBattery.class);
-    }
-
-    @Test
-    public void patriotsShouldBeLaunchedGivenAmountTimes(){
-
-        BetterRadar betterRadar = new BetterRadar(batteryMock,5,new RadarExecutor("diff"));
+        BetterRadar betterRadar = new BetterRadar(batteryMock, 5, new RadarExecutor("same"));
         betterRadar.notice(new Scud());
         verify(batteryMock, times(5)).launchPatriot();
 
