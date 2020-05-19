@@ -24,7 +24,7 @@ public class BetterRadar implements Runnable {
 
     @Override
     public void run() {
-        for(int i=0; i<count; i++){
+        for (int i = 0; i < count; i++) {
             battery.launchPatriot();
         }
     }

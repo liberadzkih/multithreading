@@ -12,9 +12,9 @@ public class RadarExecutor implements Executor {
 
     @Override
     public void execute(Runnable command) {
-        if(threadType.equals("same")){
+        if (threadType.equals("same")) {
             command.run();
-        } else if (threadType.equals("diff")){
+        } else if (threadType.equals("diff")) {
             new Thread(command).run();
         }
     }

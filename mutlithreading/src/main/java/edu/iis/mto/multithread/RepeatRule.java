@@ -10,13 +10,13 @@ import java.lang.annotation.Target;
 
 public class RepeatRule implements TestRule {
 
-    @Retention( RetentionPolicy.RUNTIME )
-    @Target( {
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({
             java.lang.annotation.ElementType.METHOD
-    } )
+    })
 
     public @interface Repeat {
-        public abstract int times();
+        int times();
     }
 
     private static class RepeatStatement extends Statement {
@@ -24,14 +24,14 @@ public class RepeatRule implements TestRule {
         private final int times;
         private final Statement statement;
 
-        private RepeatStatement( int times, Statement statement ) {
+        private RepeatStatement(int times, Statement statement) {
             this.times = times;
             this.statement = statement;
         }
 
         @Override
         public void evaluate() throws Throwable {
-            for( int i = 0; i < times; i++ ) {
+            for (int i = 0; i < times; i++) {
                 statement.evaluate();
             }
         }
@@ -39,13 +39,12 @@ public class RepeatRule implements TestRule {
 
     @Override
     public Statement apply(
-            Statement statement, Description description )
-    {
+            Statement statement, Description description) {
         Statement result = statement;
-        Repeat repeat = description.getAnnotation( Repeat.class );
-        if( repeat != null ) {
+        Repeat repeat = description.getAnnotation(Repeat.class);
+        if (repeat != null) {
             int times = repeat.times();
-            result = new RepeatStatement( times, statement );
+            result = new RepeatStatement(times, statement);
         }
         return result;
     }
