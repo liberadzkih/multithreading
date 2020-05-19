@@ -2,13 +2,13 @@ package edu.iis.mto.multithread;
 
 import java.util.concurrent.Executor;
 
-public class BetterRadar implements Runnable {
+public class Radar implements Runnable {
 
     private PatriotBattery battery;
     private int count;
     private Executor executor;
 
-    public BetterRadar(PatriotBattery battery, int count, Executor executor) {
+    public Radar(PatriotBattery battery, int count, Executor executor) {
         this.battery = battery;
         this.count = count;
         this.executor = executor;
