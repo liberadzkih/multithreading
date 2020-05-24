@@ -7,13 +7,15 @@ import org.junit.jupiter.api.Test;
 
 public class RadarTest {
 
+    //test zachowania
     @Test
     public void launchPatriotOnceWhenNoticesAScudMissle() {
         PatriotBattery batteryMock = mock(PatriotBattery.class);
-        Radar radar = new Radar(batteryMock);
-        Scud enemyMissle = new Scud();
+        Radar radar = new Radar(batteryMock); //radar podłączony do baterii
+        Scud enemyMissle = new Scud(); //wrogi pocisk jest dostrzezony prez baterie
         radar.notice(enemyMissle);
         verify(batteryMock).launchPatriot(enemyMissle);
     }
+    //watki zewnetrzna zaleznosc
 
 }
