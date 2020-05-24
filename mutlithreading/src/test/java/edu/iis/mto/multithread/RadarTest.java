@@ -19,11 +19,10 @@ public class RadarTest {
         countOfRockets=15;
     }
 
+    @Test
     public void launchPatriotOnceWhenNoticesAScudMissle() {
         Radar radar = new Radar(batteryMock);
         radar.notice(enemyMissle);
         verify(batteryMock).launchPatriot(enemyMissle);
     }
-
-
 }

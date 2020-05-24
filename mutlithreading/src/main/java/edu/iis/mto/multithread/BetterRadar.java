@@ -3,7 +3,7 @@ package edu.iis.mto.multithread;
 public class BetterRadar {
 
     private PatriotBattery battery;
-    private int countOfRockets=1;
+    private int countOfRockets;
     //zewnetrzna zaleznosc -> sposob wystrzelenia Patriota
     private Launcher launcher;
     public BetterRadar(PatriotBattery battery, int countOfRockets, Launcher launcher ) {
