@@ -1,10 +1,10 @@
 package edu.iis.mto.multithread;
 
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.*;
-
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.*;
 
 public class RadarTest {
 
