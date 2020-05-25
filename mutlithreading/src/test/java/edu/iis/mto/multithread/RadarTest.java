@@ -17,18 +17,33 @@ public class RadarTest {
         verify(batteryMock).launchPatriot(enemyMissle);
     }
 
-    @RepeatedTest(10000)
+    @RepeatedTest(1000)
     public void betterRadarTest() {
         int numOfMissiles = 100;
         PatriotBattery batteryMock = mock(PatriotBattery.class);
-        BetterRadar radar = new BetterRadar(batteryMock, numOfMissiles);
-        Scud enemyMissle = new Scud();
+        AntiMissileLaunchProtocol antiMissileLaunchProtocol = mock(AntiMissileLaunchProtocol.class);
+        BetterRadar radar = new BetterRadar(batteryMock, antiMissileLaunchProtocol, numOfMissiles);
+        Scud enemyMissile = new Scud();
+        radar.notice(enemyMissile);
+
+        verify(antiMissileLaunchProtocol).getAntiMissileLaunchProtocolTask(batteryMock, enemyMissile, numOfMissiles);
+    }
+
+    @RepeatedTest(1000)
+    public void antiMissileLaunchProtocolTest() {
+        int numOfMissiles = 100;
+        PatriotBattery batteryMock = mock(PatriotBattery.class);
+        AntiMissileLaunchProtocol antiMissileLaunchProtocol = new AntiMissileLaunchProtocol();
+        Scud enemyMissile = new Scud();
+        Thread thread = new Thread(antiMissileLaunchProtocol.getAntiMissileLaunchProtocolTask(batteryMock, enemyMissile, numOfMissiles));
+        thread.start();
         try {
-            radar.notice(enemyMissle);
+            thread.join();
         } catch (InterruptedException e) {
-            fail("This shouldn't happen: " + e.getMessage());
+            fail("Failed to join AntiMissileLaunchProtocol thread!");
         }
-        verify(batteryMock, times(numOfMissiles)).launchPatriot(enemyMissle);
+
+        verify(batteryMock, times(numOfMissiles)).launchPatriot(enemyMissile);
     }
 
 }
