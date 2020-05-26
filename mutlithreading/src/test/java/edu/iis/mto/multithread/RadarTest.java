@@ -1,13 +1,12 @@
 package edu.iis.mto.multithread;
 
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 
 public class RadarTest {
 
-    @Test
+    @RepeatedTest(20)
     public void launchPatriotOnceWhenNoticesAScudMissle() {
         PatriotBattery batteryMock = mock(PatriotBattery.class);
         Radar radar = new Radar(batteryMock);
@@ -17,14 +16,14 @@ public class RadarTest {
     }
 
 
-    @Test
+    @RepeatedTest(50)
     public void launchPatriotOnceWhenNoticesAScudMissle10TimesUsingBetterRadar() {
         int howManyMissiles = 10;
         PatriotBattery batteryMock = mock(PatriotBattery.class);
         BetterRadar radar = new BetterRadar(batteryMock);
         Scud enemyMissle = new Scud();
-        radar.notice(enemyMissle,howManyMissiles);
-        verify(batteryMock,timeout(100).times(howManyMissiles)).launchPatriot(enemyMissle);
+        radar.notice(enemyMissle, howManyMissiles);
+        verify(batteryMock, timeout(100).times(howManyMissiles)).launchPatriot(enemyMissle);
 
     }
 
