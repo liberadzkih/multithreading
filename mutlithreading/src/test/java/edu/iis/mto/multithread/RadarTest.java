@@ -12,7 +12,7 @@ public class RadarTest {
         Radar radar = new Radar(batteryMock);
         Scud enemyMissle = new Scud();
         radar.notice(enemyMissle);
-        verify(batteryMock,timeout(100)).launchPatriot(enemyMissle);
+        verify(batteryMock, timeout(100).times(10)).launchPatriot(enemyMissle);
     }
 
 
