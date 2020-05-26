@@ -16,14 +16,14 @@ public class RadarTest {
     }
 
 
-    @RepeatedTest(50)
-    public void launchPatriotOnceWhenNoticesAScudMissle10TimesUsingBetterRadar() {
-        int howManyMissiles = 10;
+    @RepeatedTest(15)
+    public void launchPatriotOnceWhenNoticesAScudMissleXTimesUsingBetterRadar() {
+        int howManyMissiles = 100;
         PatriotBattery batteryMock = mock(PatriotBattery.class);
         BetterRadar radar = new BetterRadar(batteryMock);
         Scud enemyMissle = new Scud();
         radar.notice(enemyMissle, howManyMissiles);
-        verify(batteryMock, timeout(100).times(howManyMissiles)).launchPatriot(enemyMissle);
+        verify(batteryMock, timeout(10*howManyMissiles).times(howManyMissiles)).launchPatriot(enemyMissle);
 
     }
 
