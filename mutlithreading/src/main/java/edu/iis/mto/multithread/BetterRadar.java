@@ -1,17 +1,17 @@
 package edu.iis.mto.multithread;
 
-public class BetterRadar {
+class BetterRadar {
 
     private PatriotBattery battery;
     private int rocketsToLaunch;
     private PatriotSystem patriotSystem = new PatriotSystem();
 
-    public BetterRadar(PatriotBattery battery, int rocketsToLaunch) {
+    BetterRadar(PatriotBattery battery, int rocketsToLaunch) {
         this.battery = battery;
         this.rocketsToLaunch = rocketsToLaunch;
     }
 
-    public void notice(Scud enemyMissle) {
+    void notice(Scud enemyMissle) {
         launchPatriot(enemyMissle);
     }
 
