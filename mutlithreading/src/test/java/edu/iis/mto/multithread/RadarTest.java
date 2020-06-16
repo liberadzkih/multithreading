@@ -1,19 +1,23 @@
 package edu.iis.mto.multithread;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import org.junit.Rule;
+import org.junit.jupiter.api.RepeatedTest;
 
-import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.*;
 
 public class RadarTest {
 
-    @Test
-    public void launchPatriotOnceWhenNoticesAScudMissle() {
-        PatriotBattery batteryMock = mock(PatriotBattery.class);
-        Radar radar = new Radar(batteryMock);
-        Scud enemyMissle = new Scud();
-        radar.notice(enemyMissle);
-        verify(batteryMock).launchPatriot(enemyMissle);
-    }
+    private static PatriotBattery batteryMock;
 
+    @Rule
+    public RepeatRule repeatRule = new RepeatRule();
+
+    @RepeatedTest(1000)
+    public void patriotsShouldBeLaunchedGivenAmountTimes() {
+        batteryMock = mock(PatriotBattery.class);
+        Radar radar = new Radar(batteryMock, 5, new RadarExecutor("same"));
+        radar.notice(new Scud());
+        verify(batteryMock, times(5)).launchPatriot();
+
+    }
 }

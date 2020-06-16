@@ -1,29 +1,31 @@
 package edu.iis.mto.multithread;
 
-public class Radar {
+import java.util.concurrent.Executor;
+
+public class Radar implements Runnable {
 
     private PatriotBattery battery;
+    private int count;
+    private Executor executor;
 
-    public Radar(PatriotBattery battery) {
+    public Radar(PatriotBattery battery, int count, Executor executor) {
         this.battery = battery;
+        this.count = count;
+        this.executor = executor;
     }
 
     public void notice(Scud enemyMissle) {
-        launchPatriot(enemyMissle);
+        launchPatriot();
     }
 
-    private void launchPatriot(Scud enemyMissle) {
-        Runnable launchPatriotTask = new Runnable() {
+    private void launchPatriot() {
+        executor.execute(this);
+    }
 
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    battery.launchPatriot(enemyMissle);
-                }
-            }
-        };
-
-        Thread launchingThread = new Thread(launchPatriotTask);
-        launchingThread.start();
+    @Override
+    public void run() {
+        for (int i = 0; i < count; i++) {
+            battery.launchPatriot();
+        }
     }
 }
