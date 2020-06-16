@@ -4,8 +4,8 @@ public class BetterRadar {
 
     private PatriotBattery battery;
     private int countOfRockets;
-    //zewnetrzna zaleznosc -> sposob wystrzelenia Patriota
     private Launcher launcher;
+
     public BetterRadar(PatriotBattery battery, int countOfRockets, Launcher launcher ) {
         this.battery = battery;
         this.countOfRockets = countOfRockets;
@@ -13,6 +13,15 @@ public class BetterRadar {
     }
 
     public void notice(Scud enemyMissle) {
-        launcher.launch(enemyMissle,countOfRockets,battery);
+        launchPatriot(enemyMissle);
+    }
+
+    private void launchPatriot(Scud enemyMissle) {
+        Runnable launchPatriotTask =() -> {
+            for (int i = 0; i < countOfRockets; i++) {
+                battery.launchPatriot(enemyMissle);
+            }
+        };
+      launcher.launch(launchPatriotTask);
     }
 }
