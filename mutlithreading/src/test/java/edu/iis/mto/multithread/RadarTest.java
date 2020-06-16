@@ -15,26 +15,33 @@ public class RadarTest {
     void setUp() {
         batteryMock = mock(PatriotBattery.class);
         enemyMissile = new Scud();
-        patriotLauncher = new PatriotLauncher();
+        patriotLauncher = mock(PatriotLauncher.class);
     }
 
     @RepeatedTest(15)
     public void launchPatriotOnceWhenNoticesAScudMissle() {
-        Radar radar = new Radar(batteryMock);
+        makeCommandHandlerInvokesCommand(patriotLauncher);
+        BetterRadar radar = new BetterRadar(batteryMock, patriotLauncher, 1);
         radar.notice(enemyMissile);
-        verify(batteryMock, timeout(100).times(10))
-                .launchPatriot(enemyMissile);
+        verify(batteryMock).launchPatriot(enemyMissile);
     }
 
 
     @RepeatedTest(15)
     public void launchPatriotOnceWhenNoticesAScudMissleXTimesUsingBetterRadar() {
         howManyMissiles = 100;
-        BetterRadar radar = new BetterRadar(batteryMock,patriotLauncher, howManyMissiles);
+        makeCommandHandlerInvokesCommand(patriotLauncher);
+        BetterRadar radar = new BetterRadar(batteryMock, patriotLauncher, howManyMissiles);
         radar.notice(enemyMissile);
-        verify(batteryMock, timeout(10 * howManyMissiles)
-                .times(howManyMissiles))
-                .launchPatriot(enemyMissile);
+        verify(batteryMock, times(howManyMissiles)).launchPatriot(enemyMissile);
+    }
+
+    void makeCommandHandlerInvokesCommand(PatriotLauncher patriotLauncher) {
+        doAnswer(invocationOnMock -> {
+            Runnable runnable = invocationOnMock.getArgument(0);
+            runnable.run();
+            return null;
+        }).when(patriotLauncher).launchHandler(any());
     }
 
 }
