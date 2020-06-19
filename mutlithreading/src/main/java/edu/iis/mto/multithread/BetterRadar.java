@@ -4,10 +4,11 @@ class BetterRadar {
 
     private PatriotBattery battery;
     private int rocketsToLaunch;
-    private PatriotSystem patriotSystem = new PatriotSystem();
+    private PatriotSystem patriotSystem;
 
-    BetterRadar(PatriotBattery battery, int rocketsToLaunch) {
+    BetterRadar(PatriotBattery battery, PatriotSystem patriotSystem, int rocketsToLaunch) {
         this.battery = battery;
+        this.patriotSystem = patriotSystem;
         this.rocketsToLaunch = rocketsToLaunch;
     }
 
@@ -16,6 +17,11 @@ class BetterRadar {
     }
 
     private void launchPatriot(Scud enemyMissle) {
-        patriotSystem.launchRocket(rocketsToLaunch, battery, enemyMissle);
+        Runnable launchPatriotTask = () -> {
+            for (int i = 0; i < rocketsToLaunch; i++) {
+                battery.launchPatriot(enemyMissle);
+            }
+        };
+        patriotSystem.launchRocket(launchPatriotTask);
     }
 }
