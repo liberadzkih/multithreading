@@ -1,19 +1,23 @@
 package edu.iis.mto.multithread;
-
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class LaunchPatriotStrategyTest {
 
-    @Test
-    public void launchPatriotOnceWhenNoticesAScudMissle() {
+    @RepeatedTest(100)
+    public void launch_should_call_patriot_battery_given_numbers_of_times() {
         PatriotBattery batteryMock = mock(PatriotBattery.class);
-        Radar radar = new Radar(batteryMock);
+        Launcher launcher = mock(Launcher.class);
+        doAnswer(forMock -> {
+            Runnable runnable = forMock.getArgument(0);
+            runnable.run();
+            return 0;
+        }).when(launcher).startLauncher(any());
+
+        BetterRadar radar = new BetterRadar(batteryMock,launcher,10);
         Scud enemyMissle = new Scud();
         radar.notice(enemyMissle);
-        verify(batteryMock).launchPatriot(enemyMissle);
+        verify(batteryMock,times(10)).launchPatriot(enemyMissle);
     }
+
 }
