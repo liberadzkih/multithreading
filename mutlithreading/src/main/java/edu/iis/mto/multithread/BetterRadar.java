@@ -2,12 +2,12 @@ package edu.iis.mto.multithread;
 
 public class BetterRadar {
     private PatriotBattery battery;
-    private AntiMissileLaunchProtocol antiMissileLaunchProtocol;
+    private LaunchPatriotTaskHandler launchPatriotTaskHandler;
     private int missilesToShootOnNotice;
 
-    public BetterRadar(PatriotBattery battery, AntiMissileLaunchProtocol antiMissileLaunchProtocol, int missilesToShootOnNotice) {
+    public BetterRadar(PatriotBattery battery, LaunchPatriotTaskHandler launchPatriotTaskHandler, int missilesToShootOnNotice) {
         this.battery = battery;
-        this.antiMissileLaunchProtocol = antiMissileLaunchProtocol;
+        this.launchPatriotTaskHandler = launchPatriotTaskHandler;
         this.missilesToShootOnNotice = missilesToShootOnNotice;
     }
 
@@ -16,13 +16,11 @@ public class BetterRadar {
     }
 
     private void launchPatriot(Scud enemyMissile) {
-        Runnable launchPatriotTask = antiMissileLaunchProtocol.getAntiMissileLaunchProtocolTask(battery, enemyMissile, missilesToShootOnNotice);
-        Thread launchingThread = new Thread(launchPatriotTask);
-        launchingThread.start();
-        try {
-            launchingThread.join();
-        } catch (InterruptedException e) {
-            System.out.println("Failed to join thread: " + e.getCause());
-        }
+        Runnable launchPatriotTask = () -> {
+            for (int i = 0; i < missilesToShootOnNotice; i++) {
+                battery.launchPatriot(enemyMissile);
+            }
+        };
+        launchPatriotTaskHandler.launch(launchPatriotTask);
     }
 }
