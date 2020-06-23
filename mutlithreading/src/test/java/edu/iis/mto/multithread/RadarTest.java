@@ -16,4 +16,5 @@ public class RadarTest {
         verify(batteryMock).launchPatriot(enemyMissle);
     }
 
+
 }
