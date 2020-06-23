@@ -11,19 +11,18 @@ public class BetterRadar {
         this.launchPatriot = launchPatriot;
     }
 
-    public void notice(Scud enemyMissile) throws InterruptedException {
+    public void notice(Scud enemyMissile) {
         launchPatriot(enemyMissile);
     }
 
-    private void launchPatriot(Scud enemyMissile) throws InterruptedException {
+    private void launchPatriot(Scud enemyMissile) {
         Runnable launchPatriotTask = new Runnable() {
             @Override
             public void run() {
-                launchPatriot.launch(patriotBattery, numberOfMissiles, enemyMissile);
+                for (int i = 0; i < numberOfMissiles; i++)
+                    patriotBattery.launchPatriot(enemyMissile);
             }
         };
-        Thread thread = new Thread(launchPatriotTask);
-        thread.start();
-        thread.join();
+        launchPatriot.launch(launchPatriotTask);
     }
 }
