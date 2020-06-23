@@ -12,27 +12,26 @@ import static org.mockito.Mockito.*;
 public class RadarTest {
 
     @Mock
-    PatriotBattery batteryMock;
+    private PatriotBattery batteryMock;
+    @Mock
+    private PatriotTaskLauncher launcher;
 
     @RepeatedTest(10)
     void launchPatriotRepetetiveTest() {
         int staticNumberOfMisslesToLaunch = 10;
 
-        BetterRadar betterRadar = new BetterRadar(batteryMock, staticNumberOfMisslesToLaunch);
+        doAnswer(invocation -> {
+            Runnable runnable = (Runnable) invocation.getArguments()[0];
+            runnable.run();
+            return null;
+
+        }).when(launcher).launch(any());
+
+        BetterRadar betterRadar = new BetterRadar(batteryMock, staticNumberOfMisslesToLaunch, launcher);
         Scud scud = new Scud();
 
         betterRadar.notice(scud);
-        verify(batteryMock, timeout(30*staticNumberOfMisslesToLaunch).times(staticNumberOfMisslesToLaunch)).launchPatriot(scud);
+        verify(batteryMock, times(staticNumberOfMisslesToLaunch)).launchPatriot(scud);
     }
-
-    @Test
-    public void launchPatriotOnceWhenNoticesAScudMissle() {
-        PatriotBattery batteryMock = mock(PatriotBattery.class);
-        Radar radar = new Radar(batteryMock);
-        Scud enemyMissle = new Scud();
-        radar.notice(enemyMissle);
-        verify(batteryMock).launchPatriot(enemyMissle);
-    }
-
 
 }
