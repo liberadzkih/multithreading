@@ -1,3 +1,5 @@
+multithreading.iml
+/.idea
 /target/
 /.settings/
 /.classpath
