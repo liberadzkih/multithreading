@@ -1,19 +1,45 @@
 package edu.iis.mto.multithread;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 
-import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.*;
 
 public class RadarTest {
 
-    @Test
-    public void launchPatriotOnceWhenNoticesAScudMissle() {
-        PatriotBattery batteryMock = mock(PatriotBattery.class);
-        Radar radar = new Radar(batteryMock);
-        Scud enemyMissle = new Scud();
-        radar.notice(enemyMissle);
-        verify(batteryMock).launchPatriot(enemyMissle);
+    private static final PatriotLauncher patriotLauncher = mock(PatriotLauncher.class);
+    private final PatriotBattery batteryMock = mock(PatriotBattery.class);
+    private Scud enemyMissle;
+
+    @BeforeAll
+    public static void setUpBeforeAll() {
+        doAnswer(invocation -> {
+            ((Runnable) invocation.getArgument(0)).run();
+            return null;
+
+        }).when(patriotLauncher)
+          .launchPatriot(any(Runnable.class));
     }
 
+    @BeforeEach
+    public void setUpBeforeEach() {
+        enemyMissle = new Scud();
+    }
+
+    @RepeatedTest(value = 100)
+    public void launchPatriotOnceWhenNoticesAScudMissile() {
+        final int numberOfPatriots = 1;
+        BetterRadar radar = new BetterRadar(batteryMock, numberOfPatriots, patriotLauncher);
+        radar.notice(enemyMissle);
+        verify(batteryMock, times(numberOfPatriots)).launchPatriot(enemyMissle);
+    }
+
+    @RepeatedTest(value = 100)
+    public void launchTenPatriotsWhenNoticesAScudMissile() {
+        final int numberOfPatriots = 1;
+        BetterRadar radar = new BetterRadar(batteryMock, numberOfPatriots, patriotLauncher);
+        radar.notice(enemyMissle);
+        verify(batteryMock, times(numberOfPatriots)).launchPatriot(enemyMissle);
+    }
 }
