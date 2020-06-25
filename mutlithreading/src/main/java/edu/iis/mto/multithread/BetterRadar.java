@@ -4,11 +4,14 @@ public class BetterRadar {
 
     private PatriotBattery battery;
     private PatriotTaskGenerator patriotTaskGenerator;
+    private CommandLauncher commandLauncher;
     private int numberOfRockets;
 
-    public BetterRadar(PatriotBattery battery, PatriotTaskGenerator patriotTaskGenerator, int numberOfRockets) {
+    public BetterRadar(PatriotBattery battery, PatriotTaskGenerator patriotTaskGenerator, CommandLauncher commandLauncher,
+            int numberOfRockets) {
         this.battery = battery;
         this.patriotTaskGenerator = patriotTaskGenerator;
+        this.commandLauncher = commandLauncher;
         this.numberOfRockets = numberOfRockets;
     }
 
@@ -18,12 +21,6 @@ public class BetterRadar {
 
     private void launchPatriot(Scud enemyMissile) {
         Runnable launchPatriotTask = patriotTaskGenerator.generateTask(battery, numberOfRockets, enemyMissile);
-        Thread patriot = new Thread(launchPatriotTask);
-        patriot.start();
-        try {
-            patriot.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        commandLauncher.launchCommand(launchPatriotTask);
     }
 }
