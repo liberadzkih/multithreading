@@ -3,10 +3,11 @@ package edu.iis.mto.multithread;
 public class BetterRadar {
 
     private PatriotBattery battery;
-    private final int MISSILES_TO_FIRE_AMOUNT = 10;
+    private final int MISSILES_TO_FIRE_AMOUNT;
 
-    public BetterRadar(PatriotBattery battery) {
+    public BetterRadar(PatriotBattery battery, int missiles) {
         this.battery = battery;
+        this.MISSILES_TO_FIRE_AMOUNT = missiles;
     }
 
     public void notice(Scud enemyMissle) {
